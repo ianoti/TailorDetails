@@ -7,18 +7,84 @@ and export the whole sheet as a PDF.
 Everything is stored in the browser's `localStorage`. There is no server and
 nothing is uploaded.
 
-## Running it
+## Setup
+
+### Requirements
+
+Node 22.11.0 and npm. That is the only dependency — there is no database, no
+API key and no account to create.
+
+The version is pinned in [`.tool-versions`](.tool-versions), so if you use
+[asdf](https://asdf-vm.com) or [mise](https://mise.jdx.dev) the right Node is
+picked up automatically when you `cd` into the project:
+
+```bash
+asdf install
+```
+
+With [nvm](https://github.com/nvm-sh/nvm) instead:
+
+```bash
+nvm install 22.11.0 && nvm use 22.11.0
+```
+
+Or just install Node 22 from [nodejs.org](https://nodejs.org). Check what you
+have with `node --version`.
+
+### First run
+
+Clone the repo and install the dependencies:
+
+```bash
+git clone git@github.com:ianoti/TailorDetails.git && cd TailorDetails
+```
 
 ```bash
 npm install
 ```
 
+Start the dev server — it opens `http://localhost:5173` in your browser and
+reloads as you edit:
+
 ```bash
 npm run dev
 ```
 
-Then `npm run build` produces a static `dist/` you can host anywhere (the build
-uses relative paths, so a subfolder or even `file://` works).
+That is the whole setup. Start entering measurements; they save themselves as
+you type.
+
+### Commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev server at `http://localhost:5173`, with hot reload |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Serve the built `dist/` locally, to check it before deploying |
+
+### Deploying
+
+`npm run build` produces a self-contained static `dist/` — no server side to
+run. Upload that folder to GitHub Pages, Netlify, Vercel, S3 or any static
+host. The build uses relative paths, so serving it from a subfolder works
+without any config change.
+
+It does need to be served over `http://` or `https://` rather than opened as a
+file: the build emits ES module scripts, which browsers refuse to load from a
+`file://` page. `npm run preview` is the easiest way to look at a build
+locally.
+
+### Where your measurements live
+
+In your browser's `localStorage`, under the key `tailordetails.v1`, on the
+machine and browser you entered them on. Nothing is uploaded and there is no
+account, which also means:
+
+- Measurements do not sync between your laptop and your phone.
+- Clearing your browsing data for the site erases them.
+
+Use **Export PDF ▾ → Save a JSON backup** before clearing anything, and
+**Restore from a backup…** to load it back — that is also how you move records
+to another device.
 
 ## What it does
 
